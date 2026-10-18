@@ -55,4 +55,14 @@ public class Aircraft {
     public void setIcao24(String icao24) {
         this.icao24 = icao24;
     }
+
+    @Override
+    public String toString() {
+        return "Aircraft{" +
+                "registration='" + registration + '\'' +
+                ", iata='" + iata + '\'' +
+                ", icao='" + icao + '\'' +
+                ", icao24='" + icao24 + '\'' +
+                '}';
+    }
 }

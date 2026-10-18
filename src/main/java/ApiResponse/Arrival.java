@@ -22,7 +22,7 @@ public class Arrival {
     private String gate;
 
     @JsonProperty("baggage")
-    private String baggage; // Este campo es exclusivo de Arrival
+    private String baggage;
 
     @JsonProperty("delay")
     private Integer delay;
@@ -162,5 +162,24 @@ public class Arrival {
 
     public void setActual_runway(String actual_runway) {
         this.actual_runway = actual_runway;
+    }
+
+    @Override
+    public String toString() {
+        return "Arrival{" +
+                "airport='" + airport + '\'' +
+                ", timezone='" + timezone + '\'' +
+                ", iata='" + iata + '\'' +
+                ", icao='" + icao + '\'' +
+                ", terminal='" + terminal + '\'' +
+                ", gate='" + gate + '\'' +
+                ", baggage='" + baggage + '\'' +
+                ", delay=" + delay +
+                ", scheduled='" + scheduled + '\'' +
+                ", estimated='" + estimated + '\'' +
+                ", actual='" + actual + '\'' +
+                ", estimated_runway='" + estimated_runway + '\'' +
+                ", actual_runway='" + actual_runway + '\'' +
+                '}';
     }
 }

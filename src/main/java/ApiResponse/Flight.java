@@ -25,11 +25,11 @@ public class Flight {
     private Aircraft aircraft;
 
     @JsonProperty("live")
-    private String live;
+    private Live live;
 
     public Flight(){}
 
-    public Flight(String flight_date, String flight_status, Departure departure, Arrival arrival, Airline airline, FlightDetalis flightDetalis, Aircraft aircraft, String live) {
+    public Flight(String flight_date, String flight_status, Departure departure, Arrival arrival, Airline airline, FlightDetalis flightDetalis, Aircraft aircraft, Live live) {
         this.flight_date = flight_date;
         this.flight_status = flight_status;
         this.departure = departure;
@@ -96,11 +96,25 @@ public class Flight {
         this.aircraft = aircraft;
     }
 
-    public String getLive() {
+    public Live getLive() {
         return live;
     }
 
-    public void setLive(String live) {
+    public void setLive(Live live) {
         this.live = live;
+    }
+
+    @Override
+    public String toString() {
+        return "Flight{" +
+                "flight_date='" + flight_date + '\'' +
+                ", flight_status='" + flight_status + '\'' +
+                ", departure=" + departure +
+                ", arrival=" + arrival +
+                ", airline=" + airline +
+                ", flightDetalis=" + flightDetalis +
+                ", aircraft=" + aircraft +
+                ", live='" + live + '\'' +
+                '}';
     }
 }
