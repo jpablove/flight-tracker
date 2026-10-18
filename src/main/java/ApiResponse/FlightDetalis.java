@@ -55,4 +55,14 @@ public class FlightDetalis {
     public void setCodeshared(Codeshared codeshared) {
         this.codeshared = codeshared;
     }
+
+    @Override
+    public String toString() {
+        return "FlightDetalis{" +
+                "number=" + number +
+                ", iata='" + iata + '\'' +
+                ", icao='" + icao + '\'' +
+                ", codeshared=" + codeshared +
+                '}';
+    }
 }

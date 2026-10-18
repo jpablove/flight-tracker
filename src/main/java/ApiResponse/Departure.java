@@ -22,7 +22,7 @@ public class Departure {
     private String gate;
 
     @JsonProperty("delay")
-    private Integer delay; // Integer para soportar null
+    private Integer delay;
 
     @JsonProperty("scheduled")
     private String scheduled;
@@ -34,7 +34,7 @@ public class Departure {
     private String actual;
 
     @JsonProperty("estimated_runway")
-    private String estimated_runway; // Atento al snake_case
+    private String estimated_runway;
 
     @JsonProperty("actual_runway")
     private String actual_runway;
@@ -150,5 +150,23 @@ public class Departure {
 
     public void setActual_runway(String actual_runway) {
         this.actual_runway = actual_runway;
+    }
+
+    @Override
+    public String toString() {
+        return "Departure{" +
+                "airport='" + airport + '\'' +
+                ", timezone='" + timezone + '\'' +
+                ", iata='" + iata + '\'' +
+                ", icao='" + icao + '\'' +
+                ", terminal='" + terminal + '\'' +
+                ", gate='" + gate + '\'' +
+                ", delay=" + delay +
+                ", scheduled='" + scheduled + '\'' +
+                ", estimated='" + estimated + '\'' +
+                ", actual='" + actual + '\'' +
+                ", estimated_runway='" + estimated_runway + '\'' +
+                ", actual_runway='" + actual_runway + '\'' +
+                '}';
     }
 }

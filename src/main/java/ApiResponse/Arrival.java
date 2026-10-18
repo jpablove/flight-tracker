@@ -22,7 +22,7 @@ public class Arrival {
     private String gate;
 
     @JsonProperty("baggage")
-    private String baggage; // Este campo es exclusivo de Arrival
+    private String baggage;
 
     @JsonProperty("delay")
     private Integer delay;

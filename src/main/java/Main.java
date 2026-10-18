@@ -1,9 +1,12 @@
 import ApiResponse.Flight;
+import ApiResponse.FlightDetalis;
 import ApiResponse.FlightResponse;
 import ApiResponse.Pagination;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -20,7 +23,7 @@ public class Main {
             config.load(fis);
             apiKey = config.getProperty("API_KEY");
         } catch (IOException e) {
-            System.err.printf("Configuration file not loaded: %s", e.getMessage());
+            System.err.printf("Configuration file not loaded: %s\n", e.getMessage());
         }
 
         String URL = "https://api.aviationstack.com/v1/flights?access_key=" + apiKey;
@@ -36,16 +39,28 @@ public class Main {
             System.out.printf("Status code: %d\n", response.statusCode());
             System.out.printf("Response: %s\n", response.body());
 
-            // Start of the test where I verify if I can get back the data correctly
             ObjectMapper objectMapper = new ObjectMapper();
             FlightResponse flightResponse = objectMapper.readValue(response.body(), FlightResponse.class);
             Pagination pagination = flightResponse.getPagination();
-            System.out.println(pagination.toString());
-
             List<Flight> flightList = flightResponse.getData();
-            Flight flight = flightList.get(0);
-            System.out.println(flight.getFlight_date());
-            // End
+            Flight flight = flightList.getFirst();
+
+            try (FileWriter fileWriter = new FileWriter("C:\\Users\\valen\\projects\\flight-tracker\\src\\main\\resources\\flightsInfo");
+                 BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
+
+                bufferedWriter.write(flight.toString());
+                System.out.println("Write successful");
+            } catch (IOException e) {
+                System.out.printf("\nError: %s", e.getMessage());
+            }
+
+
+
+            for (Flight f : flightList) {
+                if(f.getLive() != null) {
+                    System.out.println(f.toString());
+                }
+            }
 
         } catch (Exception e) {
             System.out.printf("There was an error: %s\n", e.getMessage());
