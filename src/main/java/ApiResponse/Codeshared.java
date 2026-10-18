@@ -79,4 +79,16 @@ public class Codeshared {
     public void setFlight_icao(String flight_icao) {
         this.flight_icao = flight_icao;
     }
+
+    @Override
+    public String toString() {
+        return "Codeshared{" +
+                "airline_name='" + airline_name + '\'' +
+                ", airline_iata='" + airline_iata + '\'' +
+                ", airline_icao='" + airline_icao + '\'' +
+                ", flight_number='" + flight_number + '\'' +
+                ", flight_iata='" + flight_iata + '\'' +
+                ", flight_icao='" + flight_icao + '\'' +
+                '}';
+    }
 }

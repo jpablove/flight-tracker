@@ -1,5 +1,4 @@
 import ApiResponse.Flight;
-import ApiResponse.FlightDetalis;
 import ApiResponse.FlightResponse;
 import ApiResponse.Pagination;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +18,7 @@ public class Main {
     public static void main(String[] args) {
         Properties config = new Properties();
         String apiKey = "";
+
         try (FileInputStream fis = new FileInputStream("config.properties")) {
             config.load(fis);
             apiKey = config.getProperty("API_KEY");
@@ -41,29 +41,25 @@ public class Main {
 
             ObjectMapper objectMapper = new ObjectMapper();
             FlightResponse flightResponse = objectMapper.readValue(response.body(), FlightResponse.class);
-            Pagination pagination = flightResponse.getPagination();
             List<Flight> flightList = flightResponse.getData();
-            Flight flight = flightList.getFirst();
 
-            try (FileWriter fileWriter = new FileWriter("C:\\Users\\valen\\projects\\flight-tracker\\src\\main\\resources\\flightsInfo");
-                 BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
-
-                bufferedWriter.write(flight.toString());
-                System.out.println("Write successful");
-            } catch (IOException e) {
-                System.out.printf("\nError: %s", e.getMessage());
-            }
-
-
-
-            for (Flight f : flightList) {
-                if(f.getLive() != null) {
-                    System.out.println(f.toString());
-                }
-            }
+            writeFlightsInfo(flightList);
 
         } catch (Exception e) {
             System.out.printf("There was an error: %s\n", e.getMessage());
+        }
+    }
+
+    private static void writeFlightsInfo (List<Flight> list) {
+        try (FileWriter fileWriter = new FileWriter("C:\\Users\\valen\\projects\\flight-tracker\\src\\main\\resources\\flightsInfo");
+             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
+            for (Flight flight : list) {
+                bufferedWriter.write(flight.toString());
+                bufferedWriter.newLine();
+            }
+            System.out.println("Write successful");
+        } catch (IOException e) {
+            System.out.printf("\nError: %s", e.getMessage());
         }
     }
 }
