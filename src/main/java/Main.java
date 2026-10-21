@@ -15,7 +15,10 @@ import java.util.List;
 import java.util.Properties;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+
+        DatabaseConnection.connection();
+
         Properties config = new Properties();
         String apiKey = "";
 
@@ -26,6 +29,7 @@ public class Main {
             System.err.printf("Configuration file not loaded: %s\n", e.getMessage());
         }
 
+        /*
         String URL = "https://api.aviationstack.com/v1/flights?access_key=" + apiKey;
 
         try {
@@ -48,6 +52,8 @@ public class Main {
         } catch (Exception e) {
             System.out.printf("There was an error: %s\n", e.getMessage());
         }
+
+         */
     }
 
     private static void writeFlightsInfo (List<Flight> list) {
