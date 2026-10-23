@@ -1,36 +1,32 @@
-import ApiResponse.Flight;
-import ApiResponse.FlightResponse;
-import ApiResponse.Pagination;
+import ApiResponse.*;
+import SQL.AirlineSQL;
+import SQL.FlightSQL;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.sql.Connection;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
     public static void main(String[] args) throws Exception {
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        databaseConnection.connection();
+        Connection c = databaseConnection.getConnection();
 
-        DatabaseConnection.connection();
+        String apiKey = getApiKey();
 
-        Properties config = new Properties();
-        String apiKey = "";
 
-        try (FileInputStream fis = new FileInputStream("config.properties")) {
-            config.load(fis);
-            apiKey = config.getProperty("API_KEY");
-        } catch (IOException e) {
-            System.err.printf("Configuration file not loaded: %s\n", e.getMessage());
-        }
-
-        /*
         String URL = "https://api.aviationstack.com/v1/flights?access_key=" + apiKey;
+
 
         try {
             HttpClient client = HttpClient.newHttpClient();
@@ -47,13 +43,60 @@ public class Main {
             FlightResponse flightResponse = objectMapper.readValue(response.body(), FlightResponse.class);
             List<Flight> flightList = flightResponse.getData();
 
+            /*
+            for (Flight f : flightList) {
+                c.setAutoCommit(false);
+
+                Airline airline = f.getAirline();
+                Departure departure = f.getDeparture();
+                Arrival arrival = f.getArrival();
+                Aircraft aircraft = f.getAircraft();
+
+                String flightDate = f.getFlight_date();
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate date = LocalDate.parse(flightDate, formatter);
+
+                String flightStatus = f.getFlight_status();
+                int airlineId = AirlineSQL.newAirline(c, airline.getIata(), airline.getIcao(), airline.getName());
+                String flightNumber = ;
+                String departureAirportId = ;
+                String arrivalAirportId = ;
+                String aircraftId = ;
+
+                FlightSQL.newFlight(c, date, flightStatus, airlineId, flightNumber, Integer.parseInt(departureAirportId), Integer.parseInt(arrivalAirportId), Integer.parseInt(aircraftId));
+            }
+
+             */
+
             writeFlightsInfo(flightList);
 
         } catch (Exception e) {
             System.out.printf("There was an error: %s\n", e.getMessage());
         }
 
+
+
+
+        /*
+            @TODO Delete everything trying to read from flightsInfo. It is not neccessary as I can the values I need from the API because I process them.
+
          */
+
+        databaseConnection.closeConnection(c);
+    }
+
+    private static String getApiKey() {
+        Properties config = new Properties();
+        String apiKey = "";
+
+        try (FileInputStream fis = new FileInputStream("config.properties")) {
+            config.load(fis);
+            apiKey = config.getProperty("API_KEY");
+        } catch (IOException e) {
+            System.err.printf("Configuration file not loaded: %s\n", e.getMessage());
+        }
+        return apiKey;
     }
 
     private static void writeFlightsInfo (List<Flight> list) {

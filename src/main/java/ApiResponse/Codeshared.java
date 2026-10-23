@@ -89,6 +89,6 @@ public class Codeshared {
                 ", flight_number='" + flight_number + '\'' +
                 ", flight_iata='" + flight_iata + '\'' +
                 ", flight_icao='" + flight_icao + '\'' +
-                '}';
+                "};";
     }
 }

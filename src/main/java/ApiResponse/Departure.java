@@ -167,6 +167,6 @@ public class Departure {
                 ", actual='" + actual + '\'' +
                 ", estimated_runway='" + estimated_runway + '\'' +
                 ", actual_runway='" + actual_runway + '\'' +
-                '}';
+                "};";
     }
 }

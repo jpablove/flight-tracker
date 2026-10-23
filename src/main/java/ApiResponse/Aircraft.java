@@ -63,6 +63,6 @@ public class Aircraft {
                 ", iata='" + iata + '\'' +
                 ", icao='" + icao + '\'' +
                 ", icao24='" + icao24 + '\'' +
-                '}';
+                "};";
     }
 }
