@@ -17,8 +17,7 @@ public class AirlineSQL {
             ps.setString(1, iata);
             ps.setString(2, icao);
             ps.setString(3, name);
-            ps.executeUpdate();
-            try (ResultSet rs = ps.getResultSet()) {
+            try (ResultSet rs = ps.executeQuery()) {
                 rs.next();
                 return rs.getInt(1);
             } catch (SQLException e) {
