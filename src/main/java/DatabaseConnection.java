@@ -13,7 +13,22 @@ public class DatabaseConnection {
     private static String DB_PASS;
     private static Connection conn;
 
-    public static void connection () throws Exception {
+    public DatabaseConnection() {}
+
+    public void connection () throws Exception {
+        getDB_PASS();
+        Class.forName("org.postgresql.Driver");
+
+        String url = "jdbc:postgresql://" + DB_SERVER + ":" + DB_PORT + "/" + DB_NAME;
+        try {
+            conn = DriverManager.getConnection(url, DB_USER, DB_PASS);
+            if (conn != null) System.out.println("CONNECTED TO DATABASE");
+        } catch (SQLException e) {
+            System.err.printf("Connection error: %s\n", e.getMessage());
+        }
+    }
+
+    private static void getDB_PASS() {
         Properties config = new Properties();
 
         try (FileInputStream fis = new FileInputStream("config.properties")) {
@@ -22,17 +37,19 @@ public class DatabaseConnection {
         } catch (IOException e) {
             System.err.printf("Configuration file not loaded: %s\n", e.getMessage());
         }
+    }
 
-        Class.forName("org.postgresql.Driver");
-
-        String url = "jdbc:postgresql://" + DB_SERVER + ":" + DB_PORT + "/" + DB_NAME + "?serverTimezone=Europe/Madrid";
+    public void closeConnection(Connection connection) {
         try {
-            conn = DriverManager.getConnection(url, DB_USER, DB_PASS);
-            if (conn != null) System.out.println("CONNECTED TO DATABASE");
+            if (connection != null) {
+                connection.close();
+            }
         } catch (SQLException e) {
-            System.err.printf("Connection error: %s\n", e.getMessage());
-        } finally {
-            if (conn != null) conn.close();
+            System.err.printf("Error closing the connection: %s\n", e.getMessage());
         }
+    }
+
+    public Connection getConnection() {
+        return this.conn;
     }
 }
