@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class CodeshareSQL {
+    private CodeshareSQL() {
+    }
+
     public static void newCodeshare(Connection connection, String operatingFlightNumber) throws SQLException {
         String sql = "INSERT INTO codeshare (operating_flight_number) VALUES (?)";
 

@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class LiveSQL {
+    private LiveSQL() {
+    }
+
     public static void newLive(Connection connection, String iata, String icao, String name, String timezone) throws SQLException {
         String sql = "INSERT INTO live (iata, icao, name, timezone) VALUES (?, ?, ?, ?)";
 
