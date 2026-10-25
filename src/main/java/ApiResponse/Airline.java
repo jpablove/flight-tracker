@@ -50,6 +50,6 @@ public class Airline {
                 "name='" + name + '\'' +
                 ", iata='" + iata + '\'' +
                 ", icao='" + icao + '\'' +
-                '}';
+                "};";
     }
 }

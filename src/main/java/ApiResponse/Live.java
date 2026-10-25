@@ -105,6 +105,6 @@ public class Live {
                 ", speedHorizontal=" + speedHorizontal +
                 ", speedVertical=" + speedVertical +
                 ", isGround=" + isGround +
-                '}';
+                "};";
     }
 }

@@ -63,6 +63,6 @@ public class FlightDetalis {
                 ", iata='" + iata + '\'' +
                 ", icao='" + icao + '\'' +
                 ", codeshared=" + codeshared +
-                '}';
+                "};";
     }
 }
