@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AircraftSQL {
+    private AircraftSQL() {
+    }
 
     public static int newAircraft(Connection connection, String registration, String icao24) throws SQLException {
         String sql = "INSERT INTO aircraft (registration, icao24) VALUES (?, ?) " +
@@ -16,15 +18,18 @@ public class AircraftSQL {
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setObject(1, registration);
             ps.setObject(2, icao24);
-            try (ResultSet rs = ps.executeQuery()) {
-                rs.next();
-                return rs.getInt(1);
-            } catch (SQLException e) {
-                throw new SQLException("Error trying to insert into aircraft: " + e.getMessage(), e);
-            }
+            return getId(ps);
         } catch (SQLException e) {
             throw new SQLException("Error trying to insert into aircraft: " + e.getMessage(), e);
         }
     }
 
+    private static int getId(PreparedStatement ps) throws SQLException {
+        try (ResultSet rs = ps.executeQuery()) {
+            rs.next();
+            return rs.getInt(1);
+        } catch (SQLException e) {
+            throw new SQLException("Error trying to insert into aircraft: " + e.getMessage(), e);
+        }
+    }
 }

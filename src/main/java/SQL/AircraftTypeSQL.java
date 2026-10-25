@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class AircraftTypeSQL {
+    private AircraftTypeSQL() {
+    }
+
     public static void newAircraftType(Connection connection, String iataCode, String icaoCode) throws SQLException {
         String sql = "INSERT INTO aircraft_type (iata_code, icao_code) VALUES (?, ?)";
 
