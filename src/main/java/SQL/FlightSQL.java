@@ -11,7 +11,13 @@ public class FlightSQL {
     public static int newFlight (Connection conn, LocalDate flight_date, String flight_status, Integer airlineId, String flightNumber,
                                   Integer departureAirportId, Integer arrivalAirportId, Integer aircraftId) throws SQLException {
         String sql = "INSERT INTO flight (flight_date, flight_status, airline_id, flight_number,\n" +
-                "                    departure_airport_id, arrival_airport_id, aircraft_id) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING flight_id";
+                    "departure_airport_id, arrival_airport_id, aircraft_id) VALUES (?, ?, ?, ?, ?, ?, ?) " +
+                    "ON CONFLICT (flight_date, airline_id, flight_number, departure_airport_id) " +
+                    "DO UPDATE SET     flight_status      = EXCLUDED.flight_status,\n" +
+                    "                  arrival_airport_id = EXCLUDED.arrival_airport_id,\n" +
+                    "                  aircraft_id        = COALESCE(EXCLUDED.aircraft_id, flight.aircraft_id),\n" +
+                    "                  updated_at         = now() " +
+                    "RETURNING flight_id";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, flight_date);

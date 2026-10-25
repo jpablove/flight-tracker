@@ -9,7 +9,8 @@ public class AirportSQL {
     public static int newAirport(Connection connection, String iata, String icao, String name, String timezone) throws SQLException {
         String sql = "INSERT INTO airport (iata, icao, name, timezone) VALUES (?, ?, ?, ?) " +
                     "ON CONFLICT (iata) " +
-                    "DO UPDATE SET name = EXCLUDED.name " +
+                    "DO UPDATE SET  name = EXCLUDED.name, " +
+                    "               timezone = EXCLUDED.timezone " +
                     "RETURNING airport_id";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
