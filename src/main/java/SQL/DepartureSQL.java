@@ -9,7 +9,19 @@ import java.time.OffsetDateTime;
 public class DepartureSQL {
     public static int newDeparture(Connection connection, long flightId, String terminal, String gate, Integer delay, OffsetDateTime scheduled,
                                     OffsetDateTime estimated, OffsetDateTime actual, OffsetDateTime estimatedRunway, OffsetDateTime actualRunway) throws SQLException {
-        String sql = "INSERT INTO departure (flight_id, terminal, gate, delay, scheduled, estimated, actual, estimated_runway, actual_runway) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING flight_id";
+        String sql = """
+                INSERT INTO departure (flight_id, terminal, gate, delay, scheduled, estimated, actual, estimated_runway, actual_runway) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        ON CONFLICT (flight_id) 
+                        DO UPDATE SET   terminal      = EXCLUDED.terminal,\n 
+                                        gate = EXCLUDED.gate,\n 
+                                        delay        = EXCLUDED.delay,\n 
+                                        scheduled         = EXCLUDED.scheduled,\n
+                                        estimated = EXCLUDED.estimated,\n
+                                        actual = EXCLUDED.actual,\n
+                                        estimated_runway = EXCLUDED.estimated_runway,\n
+                                        actual_runway = EXCLUDED.actual_runway 
+                        RETURNING flight_id
+                    """;
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setLong(1, flightId);
